@@ -1,0 +1,33 @@
+# Only track the actual CreatorTV app — ignore everything else in this home dir
+/*
+!/app
+!/components
+!/lib
+!/public
+!/.gitignore
+!/next.config.js
+!/package.json
+!/package-lock.json
+!/postcss.config.js
+!/tailwind.config.ts
+!/tsconfig.json
+!/next-env.d.ts
+
+# Within tracked folders, still exclude build artifacts and secrets
+**/node_modules/
+**/.next/
+**/out/
+**/build/
+.env*.local
+.env
+*.pem
+npm-debug.log*
+tsconfig.tsbuildinfo
+.DS_Store
+.vscode/
+.idea/
+
+# Nested podcast app + data + uploads stay out of this repo
+/podcast-app/
+/creatortv-data/
+/public/uploads/

@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 7%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 7%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 270 75% 60%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 33% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 16%;
+    --input: 217 33% 16%;
+    --ring: 270 75% 60%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: #070710;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.03);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Glow effects */
+.glow-purple { box-shadow: 0 0 40px rgba(168, 85, 247, 0.3); }
+.glow-blue   { box-shadow: 0 0 40px rgba(59, 130, 246, 0.3); }
+.glow-amber  { box-shadow: 0 0 40px rgba(245, 158, 11, 0.3); }
+.glow-green  { box-shadow: 0 0 40px rgba(16, 185, 129, 0.3); }
+
+/* Channel card hover */
+.channel-card {
+  transition: all 0.2s ease;
+}
+.channel-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Live badge pulse */
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.live-dot {
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+/* EPG row */
+.epg-current {
+  background: linear-gradient(90deg, rgba(168,85,247,0.2) 0%, transparent 100%);
+}
+
+/* YouTube iframe */
+.yt-iframe {
+  border: none;
+  border-radius: 0;
+}
+
+/* PiP window */
+.pip-window {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+/* Gradient text */
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Show card */
+.show-card-img {
+  transition: transform 0.3s ease;
+}
+.show-card:hover .show-card-img {
+  transform: scale(1.05);
+}
+
+/* Ticker */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-content {
+  animation: ticker 30s linear infinite;
+  display: flex;
+  white-space: nowrap;
+}
+
+/* EPG scroll */
+.epg-scroll {
+  overflow-x: auto;
+}
+
+/* Channel number badge */
+.ch-badge {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Sidebar active glow */
+.sidebar-active {
+  position: relative;
+}
+.sidebar-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: currentColor;
+}
+
+/* Noise overlay for cinematic feel */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
