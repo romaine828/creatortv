@@ -313,7 +313,7 @@ export function SubscribeModal({ channel, currentPlan, onSubscribe, onClose }: S
               ) : selected === 'free' ? (
                 <><ArrowRight className="w-4 h-4" /> Continue — Enter Your Info</>
               ) : (
-                <><ArrowRight className="w-4 h-4" /> Continue — {getPrice(selectedPlan)}{selected !== 'free' ? (billingCycle === 'annual' ? '/mo' : '/month') : ''}</>
+                <><ArrowRight className="w-4 h-4" /> Continue — {getPrice(selectedPlan)}{billingCycle === 'annual' ? '/mo' : '/month'}</>
               )}
             </button>
 
