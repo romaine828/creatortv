@@ -3,6 +3,7 @@
 !/app
 !/components
 !/lib
+!/middleware.ts
 !/public
 !/.gitignore
 !/next.config.js

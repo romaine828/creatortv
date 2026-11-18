@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 import { getCommunityPosts, addCommunityPost, updateCommunityPost, deleteCommunityPost } from '@/lib/community-store'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  return NextResponse.json(await getCommunityPosts())
+  const posts = await getCommunityPosts()
+  const isAdmin = (await headers()).get('x-admin') === '1'
+  // Visitors only see approved or pinned posts; the owner sees everything (including pending).
+  return NextResponse.json(isAdmin ? posts : posts.filter(p => p.approved || p.pinned))
 }
 
 export async function POST(req: Request) {

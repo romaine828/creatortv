@@ -56,6 +56,8 @@ export default function AdminPage() {
             </button>
           ))}
         </div>
+        <button onClick={async () => { await fetch('/api/admin/logout', { method: 'POST' }); window.location.href = '/' }}
+          className="px-3 py-1.5 rounded-full text-xs font-semibold text-white/40 hover:text-white/80 border border-white/10 transition-all">Log out</button>
       </header>
 
       <div className="flex-1 overflow-y-auto">

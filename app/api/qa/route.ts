@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server'
+import { headers } from 'next/headers'
 import { getQAItems, addQAItem, updateQAItem, deleteQAItem } from '@/lib/community-store'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
-  return NextResponse.json(await getQAItems())
+  const items = await getQAItems()
+  const isAdmin = (await headers()).get('x-admin') === '1'
+  if (isAdmin) return NextResponse.json(items)
+  // Visitors only see answered or featured questions, and never the asker's email address.
+  return NextResponse.json(items.filter(i => i.answer || i.featured).map(({ email, ...safe }) => safe))
 }
 
 export async function POST(req: Request) {

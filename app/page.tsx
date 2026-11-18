@@ -29,6 +29,11 @@ export default function TVApp() {
   const [activeTab, setActiveTab] = useState<TabType>('tv')
   const [appOrigin, setAppOrigin] = useState('')
   useEffect(() => { setAppOrigin(window.location.origin) }, [])
+  // Owner-only buttons (create / edit channel, creator tools) are hidden from visitors.
+  const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    fetch('/api/admin/me').then(r => r.json()).then(d => setIsAdmin(!!d.admin)).catch(() => {})
+  }, [])
 
   // Capture affiliate referral code from URL (?ref=CODE) and remember it for 30 days
   useEffect(() => {
@@ -200,6 +205,7 @@ export default function TVApp() {
     <div className="flex h-screen overflow-hidden" style={{ background: '#070710' }}>
       {/* Sidebar */}
       <TvSidebar
+        isAdmin={isAdmin}
         activeChannelId={activeChannelId}
         onSelectChannel={handleSelectChannel}
         collapsed={sidebarCollapsed}
@@ -321,11 +327,11 @@ export default function TVApp() {
           </button>
 
           {/* Create Channel CTA */}
-          <button onClick={() => setShowCreateChannel(true)}
+          {isAdmin && (<button onClick={() => setShowCreateChannel(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white transition-all hover:opacity-90"
             style={{ background: 'linear-gradient(135deg, #a855f7, #ec4899)', boxShadow: '0 0 20px rgba(168,85,247,0.3)' }}>
             <Plus className="w-3.5 h-3.5" /> Create Channel
-          </button>
+          </button>)}
 
           <button className="p-2 rounded-lg text-white/40 hover:text-white hover:bg-white/8 transition-all">
             <Bell className="w-4 h-4" />
@@ -388,11 +394,11 @@ export default function TVApp() {
                 </button>
               ))}
               {/* Add channel shortcut */}
-              <button onClick={() => setShowCreateChannel(true)}
+              {isAdmin && (<button onClick={() => setShowCreateChannel(true)}
                 className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold border border-dashed border-white/15 text-white/30 hover:text-white/60 hover:border-white/30 transition-all">
                 <Plus className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">New</span>
-              </button>
+              </button>)}
             </div>
 
             {/* ── SUBSCRIPTION BANNER for current channel ── */}
@@ -475,12 +481,12 @@ export default function TVApp() {
                   style={{ background: `linear-gradient(135deg, ${activeChannel.color}20, #0c0c18)`, border: `1px solid ${activeChannel.color}25` }}>
 
                   {/* Edit button — top right */}
-                  <button
+                  {isAdmin && (<button
                     onClick={() => setEditingChannel(activeChannel)}
                     className="absolute top-3 right-3 w-8 h-8 rounded-lg bg-white/8 hover:bg-white/15 flex items-center justify-center text-white/40 hover:text-white transition-all"
                     title="Edit channel videos">
                     <Pencil className="w-3.5 h-3.5" />
-                  </button>
+                  </button>)}
 
                   <div className="text-4xl mb-3">{activeChannel.emoji}</div>
                   <div className="text-xl font-black gradient-text mb-1"
@@ -569,10 +575,10 @@ export default function TVApp() {
                   <Tv className="w-4 h-4 text-white/40" />
                   <span className="text-white font-semibold text-sm">All Channels ({allChannels.length})</span>
                 </div>
-                <button onClick={() => setShowCreateChannel(true)}
+                {isAdmin && (<button onClick={() => setShowCreateChannel(true)}
                   className="flex items-center gap-1.5 text-xs text-white/50 hover:text-white transition-colors">
                   <Plus className="w-3.5 h-3.5" /> Create Channel
-                </button>
+                </button>)}
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 {allChannels.map(ch => {
@@ -613,18 +619,18 @@ export default function TVApp() {
                       </div>
 
                       {/* Edit button — appears on hover */}
-                      <button
+                      {isAdmin && (<button
                         onClick={e => { e.stopPropagation(); setEditingChannel(ch) }}
                         className="absolute top-2 right-2 w-7 h-7 rounded-lg bg-black/60 border border-white/15 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/15 transition-all opacity-0 group-hover:opacity-100 z-10"
                         title="Edit channel videos">
                         <Pencil className="w-3 h-3" />
-                      </button>
+                      </button>)}
                     </div>
                   )
                 })}
 
                 {/* Create new channel card */}
-                <button onClick={() => setShowCreateChannel(true)}
+                {isAdmin && (<button onClick={() => setShowCreateChannel(true)}
                   className="channel-card rounded-2xl p-4 text-left border border-dashed border-white/12 hover:border-white/25 transition-all flex flex-col items-center justify-center gap-2 text-center min-h-[140px]"
                   style={{ background: 'rgba(255,255,255,0.02)' }}>
                   <div className="w-10 h-10 rounded-xl bg-white/8 flex items-center justify-center">
@@ -634,7 +640,7 @@ export default function TVApp() {
                     <div className="text-white/50 text-xs font-semibold">Create Channel</div>
                     <div className="text-white/25 text-[10px] mt-0.5">Launch your own show</div>
                   </div>
-                </button>
+                </button>)}
               </div>
             </div>
 

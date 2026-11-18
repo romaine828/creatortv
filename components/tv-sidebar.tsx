@@ -12,9 +12,10 @@ interface TvSidebarProps {
   activeTab?: string
   onTabChange?: (tab: string) => void
   pendingCommunity?: number
+  isAdmin?: boolean
 }
 
-export function TvSidebar({ activeChannelId, onSelectChannel, collapsed, channels, activeTab, onTabChange, pendingCommunity = 0 }: TvSidebarProps) {
+export function TvSidebar({ activeChannelId, onSelectChannel, collapsed, channels, activeTab, onTabChange, pendingCommunity = 0, isAdmin = false }: TvSidebarProps) {
   const navItems = [
     { id: 'store', icon: ShoppingBag, label: 'Merch Store', color: '#a855f7' },
     { id: 'community', icon: Users, label: 'Community Wall', color: '#06b6d4', badge: pendingCommunity },
@@ -97,6 +98,7 @@ export function TvSidebar({ activeChannelId, onSelectChannel, collapsed, channel
           )
         })}
 
+        {isAdmin ? (<>
         {/* Creator Tools nav */}
         {!collapsed && (
           <div className="px-3 pt-4 pb-2">
@@ -137,6 +139,13 @@ export function TvSidebar({ activeChannelId, onSelectChannel, collapsed, channel
             </a>
           )
         })}
+        {!collapsed && (
+          <button onClick={async () => { await fetch('/api/admin/logout', { method: 'POST' }); window.location.href = '/' }}
+            className="w-full text-left px-4 py-2 text-[11px] text-white/30 hover:text-white/60 transition-colors">Log out</button>
+        )}
+        </>) : (!collapsed && (
+          <a href="/login" className="block px-4 pt-4 pb-2 text-[10px] text-white/20 hover:text-white/50 transition-colors">Owner login</a>
+        ))}
       </div>
 
       {!collapsed && (
