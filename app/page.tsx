@@ -822,7 +822,7 @@ export default function TVApp() {
                   "✨ NOW LIVE on Inspire TV · 📚 Edu Hub · 💼 Biz Network · 💚 Wellness TV · 🎬 Creator Network",
                   "⚡ Subscribe free or upgrade to Creator Pass from $9.99/month · 👑 VIP All-Access from $19.99/month",
                   "🚀 Create your own channel — click 'Create Channel' to launch your show today!",
-                ].map((item, i) => (
+                ].filter(item => isAdmin || !item.includes('Create Channel')).map((item, i) => (
                   <span key={i} className="text-white/30 text-[10px] px-8">{item}</span>
                 ))}
               </div>
